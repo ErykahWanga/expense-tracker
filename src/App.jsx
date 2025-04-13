@@ -32,3 +32,30 @@ function App() {
     if (!sortField) return 0;
     return a[sortField].localeCompare(b[sortField]);
   });
+
+  return (
+    <div className="app-container">
+      <h1>Expense Tracker</h1>
+      <div className="main-content">
+        <div className="form-section">
+          <ExpenseForm onAddExpense={addExpense} />
+        </div>
+        <div className="table-section">
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <div className="sort-controls">
+            <button onClick={() => setSortField('category')}>
+              Sort by Category
+            </button>
+            <button onClick={() => setSortField('description')}>
+              Sort by Description
+            </button>
+            <button onClick={() => setSortField('')}>Clear Sort</button>
+          </div>
+          <ExpenseTable expenses={sortedExpenses} onDeleteExpense={deleteExpense} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
