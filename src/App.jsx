@@ -5,7 +5,6 @@ import SearchBar from './components/SearchBar';
 import './App.css';
 
 function App() {
-  
   const [expenses, setExpenses] = useState(() => {
     const savedExpenses = localStorage.getItem('expenses');
     return savedExpenses
@@ -32,13 +31,11 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('');
 
- 
   useEffect(() => {
     localStorage.setItem('expenses', JSON.stringify(expenses));
   }, [expenses]);
 
   const addExpense = (expense) => {
-    
     setExpenses([...expenses, { ...expense, id: Date.now() }]);
   };
 
