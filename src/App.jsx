@@ -1,30 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseTable from './components/ExpenseTable';
 import SearchBar from './components/SearchBar';
 import './App.css';
 
 function App() {
-  const [expenses, setExpenses] = useState([
-    {
-      id: 1,
-      name: "Lunch",
-      description: "Team lunch at restaurant",
-      amount: 50.00,
-      category: "Food",
-      date: "2025-04-10"
-    },
-    {
-      id: 2,
-      name: "Books",
-      description: "New books for personal growth",
-      amount: 30.00,
-      category: "Education",
-      date: "2025-04-11"
-    }
-  ]);
+  // Load expenses from localStorage, or use default data if none exist
+  const [expenses, setExpenses] = useState(() => {
+    const savedExpenses = localStorage.getItem('expenses');
+    return savedExpenses
+      ? JSON.parse(savedExpenses)
+      : [
+          {
+            id: 1,
+            name: "Lunch",
+            description: "Team lunch at restaurant",
+            amount: 50.00,
+            category: "Food",
+            date: "2025-04-10"
+          },
+          {
+            id: 2,
+            name: "Books",
+            description: "New books for personal growth",
+            amount: 30.00,
+            category: "Education",
+            date: "2025-04-11"
+          }
+        ];
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('');
+
+  // Save expenses to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+  }, [expenses]);
 
   const addExpense = (expense) => {
     const date = new Date().toISOString().split('T')[0];
