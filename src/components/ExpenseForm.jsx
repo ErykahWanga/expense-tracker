@@ -5,12 +5,17 @@ function ExpenseForm({ onAddExpense }) {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(''); // Empty string initially
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !description || !amount || !category || !date) return;
-    onAddExpense({ name, description, amount: parseFloat(amount), category });
+    // Convert amount to a number and validate
+    const parsedAmount = parseFloat(amount);
+    if (!name || !description || isNaN(parsedAmount) || parsedAmount <= 0 || !category || !date) {
+      console.log('Validation failed:', { name, description, amount: parsedAmount, category, date });
+      return;
+    }
+    onAddExpense({ name, description, amount: parsedAmount, category, date });
     setName('');
     setDescription('');
     setAmount('');
@@ -29,6 +34,7 @@ function ExpenseForm({ onAddExpense }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter expense name"
+            required // Make field required
           />
         </label>
         <label>
@@ -38,6 +44,7 @@ function ExpenseForm({ onAddExpense }) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter description"
+            required
           />
         </label>
         <label>
@@ -48,6 +55,8 @@ function ExpenseForm({ onAddExpense }) {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount"
             step="0.01"
+            min="0.01" // Prevent negative or zero amounts
+            required
           />
         </label>
         <label>
@@ -57,6 +66,16 @@ function ExpenseForm({ onAddExpense }) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Enter category"
+            required
+          />
+        </label>
+        <label>
+          Date
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
           />
         </label>
         <button type="submit">SUBMIT</button>
